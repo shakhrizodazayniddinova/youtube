@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const AsideStyled = styled.div`
-    display: flex;
+    display: ${props => (props.isVisible ? 'flex' : 'none')};
     flex-direction: column;
     width: 224px;
     height: calc(100vh - 56px);
