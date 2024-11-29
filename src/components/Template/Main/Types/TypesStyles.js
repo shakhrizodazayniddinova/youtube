@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 export const TypesStyled = styled.div`
     width: 100%;
-    padding: 1.4% 40px;
+    padding: 0.7% 40px;
 
     @media(max-width: 450px){
-        padding: 1.4% 20px;
+        padding: 0.7% 20px;
     }
     
     .btnsBox{
