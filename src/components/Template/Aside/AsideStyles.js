@@ -6,6 +6,7 @@ export const AsideStyled = styled.div`
     width: 224px;
     height: calc(100vh - 56px);
     padding: 16px 15px;
+    background-color: white;
 
     overflow-y: scroll;
     ::-webkit-scrollbar{
@@ -13,6 +14,15 @@ export const AsideStyled = styled.div`
     }
     -ms-overflow-style: none;
     scrollbar-width: none;
+
+    @media(max-width: 450px){
+        display: ${props => (props.isVisible ? 'flex' : 'none')};
+        position: absolute;
+        z-index: 999;
+        height: 100vh;
+        padding: 15px 12px;
+        width: 220px;
+    }
 `;
 
 export const AsideListBox = styled.div`

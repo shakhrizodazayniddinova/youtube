@@ -1,4 +1,4 @@
-import { Box, CssBaseline } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import React, { useState } from 'react';
 import Aside from './Aside/Aside';
 import Header from './Header/Header';
@@ -9,9 +9,7 @@ import Videos from './Main/Videos/Videos';
 export default function Template() {
   const [ isVisible, setIsVisible ] = useState(true);
 
-  const toggleVisible = () => {
-    setIsVisible(!isVisible);
-  }
+  const toggleVisible = () => setIsVisible(!isVisible);
 
   return (
     <TemplateStyled>
@@ -23,7 +21,7 @@ export default function Template() {
 
         <MainStyled>
           <aside>
-            {isVisible && <Aside/>}
+            <Aside isVisible={isVisible}/>
           </aside>
 
           <main>

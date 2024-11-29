@@ -9,53 +9,15 @@ const Skeleton = styled('div')(({ theme, height }) => ({
   height: height || '20px',
 }));
 
-export default function DashboardLayoutBasic() {
+export default function Loading() {
   return (
-    <div style={{ padding: '16px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+    <div style={{ padding: '16px', minHeight: '100vh', paddingLeft:  40 }}>
       <Grid container spacing={2}>
-        <Grid item xs={5}></Grid>
-        <Grid item xs={12}>
-          <Skeleton height={14} />
-        </Grid>
-        <Grid item xs={12}>
-          <Skeleton height={14} />
-        </Grid>
-        <Grid item xs={4}>
-          <Skeleton height={100} />
-        </Grid>
-        <Grid item xs={8}>
-          <Skeleton height={100} />
-        </Grid>
-        <Grid item xs={12}>
-          <Skeleton height={150} />
-        </Grid>
-        <Grid item xs={12}>
-          <Skeleton height={14} />
-        </Grid>
-        <Grid item xs={3}>
-          <Skeleton height={100} />
-        </Grid>
-        <Grid item xs={3}>
-          <Skeleton height={100} />
-        </Grid>
-        <Grid item xs={3}>
-          <Skeleton height={100} />
-        </Grid>
-        <Grid item xs={3}>
-          <Skeleton height={100} />
-        </Grid>
-        <Grid item xs={12}>
-          <Skeleton height={14} />
-        </Grid>
-        <Grid item xs={4}>
-          <Skeleton height={100} />
-        </Grid>
-        <Grid item xs={8}>
-          <Skeleton height={100} />
-        </Grid>
-        <Grid item xs={12}>
-          <Skeleton height={150} />
-        </Grid>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => (
+          <Grid item xs={4}>
+            <Skeleton height={210} />
+          </Grid>
+        ))}
       </Grid>
     </div>
   );

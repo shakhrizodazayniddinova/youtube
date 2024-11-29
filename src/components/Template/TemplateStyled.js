@@ -9,4 +9,8 @@ export const MainStyled = styled.section`
     width: 100%;
     height: auto;
     display: flex;
+
+    main{
+        width: 100%;
+    }
 `;

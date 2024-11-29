@@ -1,26 +1,31 @@
 import styled from "styled-components";
 
 export const VideosStyled = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust columns based on screen size */
-    gap: 45px; /* Space between cards */
+  width: 100%;
+  height: calc(100vh - 130px);
+  padding: 20px 40px;
+
+  overflow-y: scroll;
+  ::-webkit-scrollbar{
+      display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  @media(max-width: 450px){
+    padding: 20px 20px;
+  }
+
+  .videosGrid{
     width: 100%;
-    height: calc(100vh - 130px);
-    padding: 20px 50px;
-
-    overflow-y: scroll;
-    ::-webkit-scrollbar{
-        display: none;
-    }
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-`;
-
-export const CardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  cursor: pointer;
+    gap: 25px;
+  }
+  
+  .cardContainer{
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
 `;
 
 // Thumbnail container

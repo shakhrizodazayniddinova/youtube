@@ -13,19 +13,19 @@ export default function Types() {
     {label: 'Mixes'},
     {label: 'Trailers'},
     {label: 'JavaScript'},
-    {label: 'Computer Science'},
+    {label: 'Programming'},
     {label: 'Beauty'},
     {label: 'Telenovelas'},
     {label: 'Baking'},
     {label: 'Comedies'},
-    {label: 'Pop Music'},
+    {label: 'Cartoon'},
   ]
 
   return (
     <TypesStyled>
         <Box className='btnsBox'>
             {btnsData.map((item, index) => (
-                <Button className={isActive === index ? 'active' : ''} onMouseDown={() => setIsActive(index)}>{item.label}</Button>
+                <button className={`${isActive === index ? 'active' : ''} typeBtn`} onMouseDown={() => setIsActive(index)}>{item.label}</button>
             ))}
         </Box>
     </TypesStyled>
