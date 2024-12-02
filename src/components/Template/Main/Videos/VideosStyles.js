@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
 export const VideosStyled = styled.div`
-  width: 100%;
   height: calc(100vh - 130px);
-  padding: 20px 40px;
+  padding: 20px 20px 20px 40px;
 
   overflow-y: scroll;
   ::-webkit-scrollbar{
@@ -11,10 +10,6 @@ export const VideosStyled = styled.div`
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
-
-  @media(max-width: 450px){
-    padding: 20px 20px;
-  }
 
   .videosGrid{
     width: 100%;
@@ -25,6 +20,8 @@ export const VideosStyled = styled.div`
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    min-width: 300px;
+    /* max-width: 380px; */
   }
 `;
 
@@ -32,15 +29,9 @@ export const VideosStyled = styled.div`
 export const ThumbnailWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 210px;
+  height: 230px;
   overflow: hidden;
   border-radius: 12px;
-
-  iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
 `;
 
 // Duration label on thumbnail

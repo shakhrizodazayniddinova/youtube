@@ -7,35 +7,27 @@ export const HeaderStyled = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 16px 24px;
-
-    @media(max-width: 450px){
-        padding: 15px 5px;
-    }
 `;
 
 export const LogoBox = styled.div`
-    width: 100%;
+    width: auto;
     height: auto;
     display: flex;
     align-items: center;
     gap: 24px;
-    @media(max-width: 450px){
-        gap: 10px;
-    }
 
     img{
         object-fit: cover;
         cursor: pointer;
+        margin-top: 5px;
     }
 `;
+
 export const SearchBox = styled.div`
+    width: auto;
     display: flex;
     align-items: center;
     gap: 15px;
-
-    @media(max-width: 450px){
-        display: none;
-    }
 
     form{
         display: flex;
@@ -74,15 +66,10 @@ export const SearchBox = styled.div`
 `;
 
 export const SettingBox = styled.div`
+    width: auto;
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-left: 16%;
-
-    @media(max-width: 450px){
-        gap: 0px;
-        margin-left: 18%;
-    }
 
     button{
         color: #000;

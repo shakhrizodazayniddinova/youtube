@@ -1,7 +1,9 @@
 {
     "videos": [
         {
-            "link": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            "id": 1,
+            "videoLink": "https://youtube.com/embed/dQw4w9WgXcQ",
+            "imgLink": "https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg",
             "duration": "3:33",
             "avatar": "https://yt3.ggpht.com/ytc/AKedOLTM1JxRpTW6n5PC3D9V7FM7VmBLJ1zghbdcL4I=s88-c-k-c0x00ffffff-no-rj",
             "title": "Never Gonna Give You Up",
@@ -9,7 +11,9 @@
             "views": "1M views • 15 years ago"
         },
         {
-            "link": "https://www.youtube.com/embed/3JZ_D3ELwOQ",
+            "id": 2,
+            "videoLink": "https://youtube.com/embed/3JZ_D3ELwOQ",
+            "imgLink": "https://img.youtube.com/vi/3JZ_D3ELwOQ/0.jpg",
             "duration": "4:12",
             "avatar": "https://yt3.ggpht.com/ytc/AKedOLTM1JxRpTW6n5PC3D9V7FM7VmBLJ1zghbdcL4I=s88-c-k-c0x00ffffff-no-rj",
             "title": "Shape of You",
@@ -17,7 +21,9 @@
             "views": "6M views • 7 years ago"
         },
         {
-            "link": "https://www.youtube.com/embed/L_jWHffIx5E",
+            "id": 3,
+            "videoLink": "https://youtube.com/embed/L_jWHffIx5E",
+            "imgLink": "https://img.youtube.com/vi/L_jWHffIx5E/0.jpg",
             "duration": "4:30",
             "avatar": "https://yt3.ggpht.com/ytc/AKedOLTM1JxRpTW6n5PC3D9V7FM7VmBLJ1zghbdcL4I=s88-c-k-c0x00ffffff-no-rj",
             "title": "Uptown Funk",
@@ -25,7 +31,9 @@
             "views": "4.5M views • 10 years ago"
         },
         {
-            "link": "https://www.youtube.com/embed/tgbNymZ7vqY",
+            "id": 4,
+            "videoLink": "https://youtube.com/embed/tgbNymZ7vqY",
+            "imgLink": "https://img.youtube.com/vi/tgbNymZ7vqY/0.jpg",
             "duration": "3:39",
             "avatar": "https://yt3.ggpht.com/ytc/AKedOLTM1JxRpTW6n5PC3D9V7FM7VmBLJ1zghbdcL4I=s88-c-k-c0x00ffffff-no-rj",
             "title": "Gangnam Style",
@@ -33,7 +41,9 @@
             "views": "4.4M views • 12 years ago"
         },
         {
-            "link": "https://www.youtube.com/embed/kJQP7kiw5Fk",
+            "id": 5,
+            "videoLink": "https://youtube.com/embed/kJQP7kiw5Fk",
+            "imgLink": "https://img.youtube.com/vi/kJQP7kiw5Fk/0.jpg",
             "duration": "4:43",
             "avatar": "https://yt3.ggpht.com/ytc/AKedOLTM1JxRpTW6n5PC3D9V7FM7VmBLJ1zghbdcL4I=s88-c-k-c0x00ffffff-no-rj",
             "title": "Despacito",
@@ -41,7 +51,9 @@
             "views": "8M views • 7 years ago"
         },
         {
-            "link": "https://youtube.com/embed/4NRXx6U8ABQ",
+            "id": 6,
+            "videoLink": "https://youtube.com/embed/4NRXx6U8ABQ",
+            "imgLink": "https://img.youtube.com/vi/4NRXx6U8ABQ/0.jpg",
             "duration": "3:22",
             "avatar": "https://yt3.ggpht.com/ytc/AKedOLTM1JxRpTW6n5PC3D9V7FM7VmBLJ1zghbdcL4I=s88-c-k-c0x00ffffff-no-rj",
             "title": "Blinding Lights",
@@ -49,7 +61,9 @@
             "views": "4M views • 5 years ago"
         },
         {
-            "link": "https://www.youtube.com/embed/r7qovpFAGrQ",
+            "id": 7,
+            "videoLink": "https://youtube.com/embed/r7qovpFAGrQ",
+            "imgLink": "https://img.youtube.com/vi/r7qovpFAGrQ/0.jpg",
             "duration": "2:38",
             "avatar": "https://yt3.ggpht.com/ytc/AKedOLTM1JxRpTW6n5PC3D9V7FM7VmBLJ1zghbdcL4I=s88-c-k-c0x00ffffff-no-rj",
             "title": "Old Town Road",
@@ -57,7 +71,9 @@
             "views": "3M views • 5 years ago"
         },
         {
-            "link": "https://www.youtube.com/embed/CevxZvSJLk8",
+            "id": 8,
+            "videoLink": "https://youtube.com/embed/CevxZvSJLk8",
+            "imgLink": "https://img.youtube.com/vi/CevxZvSJLk8/0.jpg",
             "duration": "3:42",
             "avatar": "https://yt3.ggpht.com/ytc/AKedOLTM1JxRpTW6n5PC3D9V7FM7VmBLJ1zghbdcL4I=s88-c-k-c0x00ffffff-no-rj",
             "title": "Roar",
@@ -65,7 +81,9 @@
             "views": "3.4M views • 11 years ago"
         },
         {
-            "link": "https://youtube.com/embed/UceaB4D0jpo",
+            "id": 9,
+            "videoLink": "https://youtube.com/embed/UceaB4D0jpo",
+            "imgLink": "https://img.youtube.com/vi/UceaB4D0jpo/0.jpg",
             "duration": "3:17",
             "avatar": "https://yt3.ggpht.com/ytc/AKedOLTM1JxRpTW6n5PC3D9V7FM7VmBLJ1zghbdcL4I=s88-c-k-c0x00ffffff-no-rj",
             "title": "The Box",

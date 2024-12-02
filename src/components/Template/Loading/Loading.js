@@ -13,8 +13,8 @@ export default function Loading() {
   return (
     <div style={{ padding: '16px', minHeight: '100vh', paddingLeft:  40 }}>
       <Grid container spacing={2}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => (
-          <Grid item xs={4}>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+          <Grid item key={index} xs={4}>
             <Skeleton height={210} />
           </Grid>
         ))}

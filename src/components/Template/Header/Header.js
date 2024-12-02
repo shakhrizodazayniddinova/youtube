@@ -1,5 +1,6 @@
 import React from 'react';
 import { HeaderStyled, LogoBox, SearchBox, SettingBox } from './HeaderStyles';
+import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import MicIcon from '@mui/icons-material/Mic';
@@ -8,7 +9,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import logo from './logo.png';
-import { IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export default function Header({toggleVisible}) {
   return (
@@ -17,7 +18,10 @@ export default function Header({toggleVisible}) {
         <IconButton onClick={toggleVisible}>
           <MenuIcon sx={{cursor: 'pointer'}}/>
         </IconButton>
-        <img src={logo} alt="Logo" />
+
+        <Link to={'/'}>
+          <img src={logo} alt="Logo" />
+        </Link>
       </LogoBox>
 
       <SearchBox>

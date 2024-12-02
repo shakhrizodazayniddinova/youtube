@@ -25,7 +25,7 @@ export default function Types() {
     <TypesStyled>
         <Box className='btnsBox'>
             {btnsData.map((item, index) => (
-                <button className={`${isActive === index ? 'active' : ''} typeBtn`} onMouseDown={() => setIsActive(index)}>{item.label}</button>
+                <button key={item.label} className={`${isActive === index ? 'active' : ''} typeBtn`} onMouseDown={() => setIsActive(index)}>{item.label}</button>
             ))}
         </Box>
     </TypesStyled>
