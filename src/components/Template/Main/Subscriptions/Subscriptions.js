@@ -52,7 +52,7 @@ export default function Subscriptions() {
 
             <Box className='subTexts'>
               <Typography variant='h6'>{item.channel}</Typography>
-              <Typography variant='caption' color='gray'>@{item.channel} • 11K subscribers</Typography>
+              <Typography variant='caption' color='gray'>@{item.channel} • {item.subscribers} subscribers</Typography>
               <Typography variant='caption' color='gray'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur culpa expedita hic distinctio, quo molestiae consequatur nesciunt laboriosam. Distinctio eos odio, suscipit vel at deleniti</Typography>
             </Box>
 
