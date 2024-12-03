@@ -70,12 +70,35 @@ export const PlayStyled = styled.div`
                                 box-shadow: none;
                             }
                         }
-    
+
                         .shareDownBtnsBox{
                             display: flex;
                             align-items: center;
                             gap: 15px;
+                            
+                            .likeUnlikeBox{
+                                .btnsGroup{
+                                    width: auto;
+                                    display: flex;
+                                    padding: 0px 15px;
+                                    border-radius: 20px;
+                                    background-color: #f3f3f3;
     
+                                    .groupIcon{
+                                        color: black;
+                                        width: 50px;
+                                    }
+
+                                    .likeBox{
+                                        padding-right: 15px;
+
+                                        .likeIcon{
+                                            width: 35px !important;
+                                        }
+                                    }
+                                }
+                            }
+        
                             .shareDownBtns{
                                 text-transform: none;
                                 border-radius: 20px;

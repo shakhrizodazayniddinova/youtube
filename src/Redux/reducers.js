@@ -1,4 +1,4 @@
-import { ADD_COMMENT, SELECT_CHANNEL, SET_VIDEOS, TOGGLE_ASIDE_VISIBILITY } from "./actions";
+import { ADD_COMMENT, SELECT_CHANNEL, selectChannel, SET_VIDEOS, TOGGLE_ASIDE_VISIBILITY, UNSUBSCRIBE_CHANNEL } from "./actions";
 
 // Initial state for aside visibility
 const initialAsideState = {
@@ -53,7 +53,7 @@ export const commentReducer = (state = initialCommentState, action) => {
         case ADD_COMMENT:
             return{ 
                 ...state,
-                comments: [...state.comments, { title: action.payload }],
+                comments: [...state.comments, action.payload ],
             }
         
         default: return state;

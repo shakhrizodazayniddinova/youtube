@@ -20,7 +20,8 @@ export const selectChannel = (channel, imgLink) => ({
     payload: { channel, imgLink },  // Make sure payload is an object, not individual props
 });
 
-export const addComment = (value) => ({
+// Actions for add comment
+export const addComment = (comment) => ({
     type: ADD_COMMENT,
-    payload: value,
+    payload: comment,
 })

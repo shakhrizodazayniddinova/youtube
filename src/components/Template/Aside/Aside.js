@@ -3,8 +3,12 @@ import { useSelector } from 'react-redux';
 import { AsideFooter, AsideList, AsideListBox, AsideStyled } from './AsideStyles';
 import { Box, Typography } from '@mui/material';
 import { exploreDatas, homeDatas, youDatas } from './AsideDatas';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Aside({isVisible}) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [ homeActive, setHomeActive ] = useState(0);
   const [ youActive, setYouActive ] = useState();
   const [ subscribeActive, setSubscribeActive ] = useState();
@@ -35,9 +39,14 @@ export default function Aside({isVisible}) {
   // subscribe channel function
   useEffect(() => {
     if(channel && imgLink){
-      setChannelData((prevData) => [
-        ...prevData, {name: channel, img: imgLink},
-      ])
+      setChannelData((prevData) => {
+        const exists = prevData.some((item) => item.name === channel);
+
+        if(!exists){
+          return[...prevData, {name: channel, img: imgLink}];
+        }
+        return prevData;
+      });
     }
   }, [channel, imgLink]);
 
@@ -53,7 +62,7 @@ export default function Aside({isVisible}) {
             </Box>
 
             <Box className={item.class}>
-              <AsideList className={homeActive === index ? 'active' : ''} onClick={() => handleActive('home', index)}>
+              <AsideList className={homeActive === index && 'active'} onClick={() => {handleActive('home', index); navigate('/')}}>
                   {item.icon}
                   <Typography variant='body2' fontSize={'15px'} m={'2px 0 0 0'}>{item.label}</Typography>
               </AsideList>
@@ -91,6 +100,10 @@ export default function Aside({isVisible}) {
                     <Typography variant='body2' fontSize={'15px'} m={'2px 0 0 0'}>{item.name}</Typography>
                 </AsideList>
             ))}
+            <AsideList onClick={() => { navigate('/subscriptions'); handleActive('subscribe', 9)}} className={location.pathname === '/subscriptions' ? 'active' : ''}>
+                <FormatListBulletedIcon/>
+                <Typography variant='body2' fontSize={'15px'} m={'2px 0 0 0'}>All subscriptions</Typography>
+            </AsideList>
           </Box>
         </Box>
 

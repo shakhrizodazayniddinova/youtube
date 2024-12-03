@@ -73,6 +73,10 @@ export const AsideList = styled.div`
     border-radius: 10px;
     padding-left: 15px;
     cursor: pointer;
+
+    a{
+        color: black;
+    }
 `;
 
 export const AsideFooter = styled.div`
