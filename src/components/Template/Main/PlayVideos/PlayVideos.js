@@ -16,7 +16,7 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import Checkbox from '@mui/material/Checkbox';
 import axios from 'axios';
 
-const APIUrl = 'http://localhost:5000/videos';
+const APIUrl = 'http://localhost:5000/subscribers';
 
 export default function PlayVideos() {
   const dispatch = useDispatch();
@@ -26,36 +26,58 @@ export default function PlayVideos() {
   const [count, setCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState({});
 
-  const [subscribers, setSubscribers] = useState(video.subscribers);
-  const [isSubscribed, setIsSubscribed] = useState(video.isSubscribed);  
-  
   useEffect(() => {
     const fetchSubscribers = async () => {
       try {
-        const response = await axios.get(`${APIUrl}/${video.id}`);
-        dispatch(selectChannel(response.data));
-        setSubscribers(response.data.subscribers || 0);
+        const response = await axios.get(APIUrl);
+        const subscriptions = response.data;
+
+        const subscribedChannel = subscriptions.reduce((acc, sub) => {
+          acc[sub.videoId] = sub.isSubscribed;
+          return acc;
+        }, {})
+
+        setIsSubscribed(subscribedChannel);
       } catch (error) {
-        console.error("Failed to fetch subscribers:", error);
+        console.error('Failed to fetch subscribers:', error);
       }
-    };
+    }    
 
     fetchSubscribers();
-  }, [dispatch, video.id]);
+  }, []);
   
   const handleSubscribe = async () => {
-    dispatch(selectChannel(video.channel, video.imgLink));
-    setIsSubscribed(true);
+    if (!video || isSubscribed[video.id]) return;
+
+    if (isSubscribed[video.id]) {
+      console.log('Already subscribed!');
+      return; 
+    }
+  
+    // datas for post subscribers
+    const newSub = { videoId: video.id, channel: video.channel, imgLink: video.imgLink, isSubscribed: true };
     
-    const updatedSubscribers = isSubscribed ? subscribers - 1 : subscribers + 1; 
-    setSubscribers(updatedSubscribers)
-    
+    // datas for put subscribers
+    const updatedVideo = { ...video, subscribers: (video.subscribers || 0) + 1, isSubscribed: true };
+  
     try {
-      await axios.patch(`${APIUrl}/${video.id}`, { subscribers: updatedSubscribers + 1, isSubscribed: !isSubscribed });
-      console.log('add api sub');
+      await axios.post(APIUrl, newSub);  // post subscribers
+  
+      await axios.put(`http://localhost:5000/videos/${video.id}`, updatedVideo)  // put subscribers count
+  
+      dispatch(selectChannel(video.channel, video.imgLink));  // subscribed channel redux
+  
+      video.subscribers = updatedVideo.subscribers;  // update UI
+
+      setIsSubscribed((prevState) => ({
+        ...prevState,
+        [video.id]: true,
+      }));  // update subscribe state
+
     } catch (error) {
-      console.error('Subscription error:', error);
+      console.error('Subscription failed:', error);
     }
   };
   
@@ -89,11 +111,13 @@ export default function PlayVideos() {
 
                   <Box>
                     <p className='channel'>{video.channel}</p>
-                    <p className='subscribers'>{video.subscribers} subscribers</p>
+                    <p className='subscribers'>{video?.subscribers || 0 } subscribers</p>
                   </Box>
 
                   <Box>
-                    <Button variant='contained' className='subscribeBtn' onClick={handleSubscribe} style={{ backgroundColor: isSubscribed ? 'white' : '', border: isSubscribed && '1px solid black', color: isSubscribed && 'black' }}>{isSubscribed ? 'Subscribed' : 'Subscribe'}</Button>
+                    <Button variant='contained' className='subscribeBtn' onClick={handleSubscribe} style={{ backgroundColor: isSubscribed[video.id] ? 'white' : '', border: isSubscribed[video.id] && '1px solid black', color: isSubscribed[video.id] && 'black' }}>
+                      {isSubscribed[video.id] ? 'Subscribed' : 'Subscribe'}
+                    </Button>
                   </Box>
                 </Box>
 

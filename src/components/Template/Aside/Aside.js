@@ -5,6 +5,7 @@ import { Box, Typography } from '@mui/material';
 import { exploreDatas, homeDatas, youDatas } from './AsideDatas';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Aside({isVisible}) {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ export default function Aside({isVisible}) {
   const [ subscribeActive, setSubscribeActive ] = useState();
   const [ exploreActive, setExploreActive ] = useState();
 
-  const { channel, imgLink } = useSelector((state) => state.channel.selectedChannel || {});
   const [ channelData, setChannelData ] = useState([]);
 
   // btn active function
@@ -38,17 +38,19 @@ export default function Aside({isVisible}) {
   
   // subscribe channel function
   useEffect(() => {
-    if(channel && imgLink){
-      setChannelData((prevData) => {
-        const exists = prevData.some((item) => item.name === channel);
-
-        if(!exists){
-          return[...prevData, {name: channel, img: imgLink}];
-        }
-        return prevData;
-      });
+    const fetchChannelData = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/subscribers');
+        setChannelData(res.data);
+        console.log(channelData);
+        
+      } catch (error) {
+        console.error('Failed to fetch channel data:', error);
+      }
     }
-  }, [channel, imgLink]);
+
+    fetchChannelData();
+  }, []);
 
   return (
     <AsideStyled isVisible={isVisible}>
@@ -96,8 +98,8 @@ export default function Aside({isVisible}) {
           <Box className='channelInform'>
             {channelData.map((item, index) => (
                 <AsideList className={subscribeActive === index ? 'active' : ''} onClick={() => handleActive('subscribe', index)}>
-                    <img src={item.img} alt="" />
-                    <Typography variant='body2' fontSize={'15px'} m={'2px 0 0 0'}>{item.name}</Typography>
+                    <img src={item.imgLink} alt="" />
+                    <Typography variant='body2' fontSize={'15px'} m={'2px 0 0 0'}>{item.channel}</Typography>
                 </AsideList>
             ))}
             <AsideList onClick={() => { navigate('/subscriptions'); handleActive('subscribe', 9)}} className={location.pathname === '/subscriptions' ? 'active' : ''}>

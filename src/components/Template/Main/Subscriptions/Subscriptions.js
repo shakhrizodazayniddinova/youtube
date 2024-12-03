@@ -11,9 +11,9 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import axios from 'axios';
 
 export default function Subscriptions() {
-  const { channel, imgLink } = useSelector((state) => state.channel.selectedChannel || {});
   const [channelData, setChannelData] = useState([]);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,17 +29,17 @@ export default function Subscriptions() {
 
   // subscribe channel function
   useEffect(() => {
-    if(channel && imgLink){
-      setChannelData((prevData) => {
-        const exists = prevData.some((item) => item.name === channel);
-
-        if(!exists){
-          return[...prevData, {name: channel, img: imgLink}];
-        }
-        return prevData;
-      });
+    const fetchChannelData = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/subscribers');
+        setChannelData(res.data);
+      } catch (error) {
+        console.error('Failed to fetch channel data:', error);
+      }
     }
-  }, [channel, imgLink]);
+
+    fetchChannelData();
+  }, []);
 
   return (
     <SubStyled>
@@ -48,11 +48,11 @@ export default function Subscriptions() {
         
         {channelData.map((item) => (
           <Box className='subscribedChannelsBox'>
-            <img src={item.img} alt="channel image" className='channelImg'/>
+            <img src={item.imgLink} alt="channel image" className='channelImg'/>
 
             <Box className='subTexts'>
-              <Typography variant='h6'>{item.name}</Typography>
-              <Typography variant='caption' color='gray'>@{item.name} • 11K subscribers</Typography>
+              <Typography variant='h6'>{item.channel}</Typography>
+              <Typography variant='caption' color='gray'>@{item.channel} • 11K subscribers</Typography>
               <Typography variant='caption' color='gray'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur culpa expedita hic distinctio, quo molestiae consequatur nesciunt laboriosam. Distinctio eos odio, suscipit vel at deleniti</Typography>
             </Box>
 

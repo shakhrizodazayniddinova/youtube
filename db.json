@@ -9,6 +9,7 @@
       "title": "Rick Astley"
     }
   ],
+  "subscribers": [],
   "videos": [
     {
       "id": "1",
@@ -20,7 +21,7 @@
       "channel": "Rick Astley",
       "views": "1M views • 15 years ago",
       "subscribers": 0,
-      "isSubscribed": false
+      "isSubscribed": true
     },
     {
       "id": "2",
@@ -32,7 +33,7 @@
       "channel": "Ed Sheeran",
       "views": "6M views • 7 years ago",
       "subscribers": 0,
-      "isSubscribed": false
+      "isSubscribed": true
     },
     {
       "id": "3",
@@ -44,7 +45,7 @@
       "channel": "Mark Ronson ft. Bruno Mars",
       "views": "4.5M views • 10 years ago",
       "subscribers": 0,
-      "isSubscribed": false
+      "isSubscribed": true
     },
     {
       "id": "4",
