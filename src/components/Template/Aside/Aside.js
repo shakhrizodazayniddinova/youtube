@@ -15,7 +15,7 @@ export default function Aside({isVisible}) {
   const [ exploreActive, setExploreActive ] = useState();
 
   const { channel, imgLink } = useSelector((state) => state.channel.selectedChannel || {});
-  const [channelData, setChannelData] = useState([]);
+  const [ channelData, setChannelData ] = useState([]);
 
   // btn active function
   const handleActive = (btnType, btnIndex) => {

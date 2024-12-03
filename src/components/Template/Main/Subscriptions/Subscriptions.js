@@ -13,7 +13,6 @@ import PersonOffIcon from '@mui/icons-material/PersonOff';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function Subscriptions() {
-  const dispatch = useDispatch();
   const { channel, imgLink } = useSelector((state) => state.channel.selectedChannel || {});
   const [channelData, setChannelData] = useState([]);
 

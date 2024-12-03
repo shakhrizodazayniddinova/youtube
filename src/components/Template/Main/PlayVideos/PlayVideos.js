@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Comments from '../Comments/Comments';
@@ -14,49 +14,64 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import Checkbox from '@mui/material/Checkbox';
+import axios from 'axios';
+
+const APIUrl = 'http://localhost:5000/videos';
 
 export default function PlayVideos() {
   const dispatch = useDispatch();
   const { state } = useLocation();
   const video = state?.video;
 
-  const [subscribedVideos, setSubscribedVideos] = useState({});
   const [count, setCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
+
+  const [subscribers, setSubscribers] = useState(video.subscribers);
+  const [isSubscribed, setIsSubscribed] = useState(video.isSubscribed);  
   
-  const handleSubscribe = (videoId) => {
-    dispatch(selectChannel(
-      video.channel,
-      video.imgLink,
-    ));
+  useEffect(() => {
+    const fetchSubscribers = async () => {
+      try {
+        const response = await axios.get(`${APIUrl}/${video.id}`);
+        dispatch(selectChannel(response.data));
+        setSubscribers(response.data.subscribers || 0);
+      } catch (error) {
+        console.error("Failed to fetch subscribers:", error);
+      }
+    };
+
+    fetchSubscribers();
+  }, [dispatch, video.id]);
+  
+  const handleSubscribe = async () => {
+    dispatch(selectChannel(video.channel, video.imgLink));
+    setIsSubscribed(true);
     
-    // Update the subscription status for the specific video
-    setSubscribedVideos(prevState => ({
-      ...prevState,
-      [videoId]: true, // Mark the video as subscribed
-    }));
-  }
-  const isSubscribed = subscribedVideos[video.id];
-
-   // Like button clicked
-   const handleLike = () => {
-    if (!isLiked) {
-      setCount(count + 1);  // Increase count
-      setIsLiked(true);      // Mark like as active
-      setIsDisliked(false);
+    const updatedSubscribers = isSubscribed ? subscribers - 1 : subscribers + 1; 
+    setSubscribers(updatedSubscribers)
+    
+    try {
+      await axios.patch(`${APIUrl}/${video.id}`, { subscribers: updatedSubscribers + 1, isSubscribed: !isSubscribed });
+      console.log('add api sub');
+    } catch (error) {
+      console.error('Subscription error:', error);
     }
   };
+  
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    if (!isLiked) setCount(count + 1);
+    else setCount( count-1 );
+    if (isDisliked) setIsDisliked(false);
+  };
 
-  // Dislike button clicked
   const handleDislike = () => {
-    if (isLiked) {
-      setCount(count - 1);  // Decrease count if liked
-      setIsLiked(false);     // Uncheck the like button
-      setIsDisliked(true);
-    }
+    setIsDisliked(!isDisliked);
+    if (!isDisliked) setCount(count - 1);
+    else setCount(count+1);
+    if (isLiked) setIsLiked(false);
   };
-
 
   return (
     <PlayStyled>
@@ -74,11 +89,11 @@ export default function PlayVideos() {
 
                   <Box>
                     <p className='channel'>{video.channel}</p>
-                    <p className='subscribers'>11.5K subscribers</p>
+                    <p className='subscribers'>{video.subscribers} subscribers</p>
                   </Box>
 
                   <Box>
-                    <Button variant='contained' className='subscribeBtn' onClick={() => handleSubscribe(video.id)} style={{ backgroundColor: isSubscribed ? 'white' : '', border: isSubscribed && '1px solid black', color: isSubscribed && 'black' }}>{isSubscribed ? 'Subscribed' : 'Subscribe'}</Button>
+                    <Button variant='contained' className='subscribeBtn' onClick={handleSubscribe} style={{ backgroundColor: isSubscribed ? 'white' : '', border: isSubscribed && '1px solid black', color: isSubscribed && 'black' }}>{isSubscribed ? 'Subscribed' : 'Subscribe'}</Button>
                   </Box>
                 </Box>
 

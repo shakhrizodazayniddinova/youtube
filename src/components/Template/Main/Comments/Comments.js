@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { CommentsStyled } from './CommentsStyled';
@@ -11,7 +11,7 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { addComment } from '../../../../Redux/actions';
+import { addComment, setComments } from '../../../../Redux/actions';
 
 export default function Comments() {
   const dispatch = useDispatch();
@@ -23,19 +23,46 @@ export default function Comments() {
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
 
+  useEffect(() => {
+    const fetchComments = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/comments');
+            dispatch(setComments(response.data));  // Set comments to Redux store
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    fetchComments();
+  }, [dispatch]);
+  
+  // Post comment to db.json
+  const handleAddComment = async () => {
+      if (inputValue.trim() !== "") {
+          const newComment = { title: inputValue };
+          try {
+              // Send the new comment to the backend
+              const response = await axios.post('http://localhost:5000/comments', newComment);
+              dispatch(addComment(response.data));  // Add to Redux store
+              setInputValue('');
+          } catch (error) {
+              console.log(error);
+          }
+      }
+  };
+
     // Like button clicked
     const handleLike = () => {
         if (!isLiked) {
-            setIsLiked(true);      // Mark like as active
-            setIsDisliked(false);
+            setIsLiked(!isLiked);      // Mark like as active
+            setIsDisliked(!isDisliked);
         }
     };
 
     // Dislike button clicked
     const handleDislike = () => {
         if (isLiked) {
-            setIsLiked(false);     // Uncheck the like button
-            setIsDisliked(true);
+            setIsLiked(!isLiked);      // Uncheck the like button
+            setIsDisliked(!isDisliked);
         }
     };
 
@@ -50,27 +77,12 @@ export default function Comments() {
         setInputValue("");
     };
 
-    // Post comment to db.json
-    const handleAddComment = async () => {
-        if (inputValue.trim() !== "") {
-            const newComment = { title: inputValue };
-            try {
-                const response = await axios.post('http://localhost:5000/comments', newComment);
-                dispatch(addComment(response.data));
-                setInputValue('');
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    };
-
     // Handle Enter key press for adding a comment
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleAddComment();
         }
     };
-
 
   return (
     <CommentsStyled>
