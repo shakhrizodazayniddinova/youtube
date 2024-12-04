@@ -42,8 +42,6 @@ export default function Aside({isVisible}) {
       try {
         const res = await axios.get('http://localhost:5000/subscribers');
         setChannelData(res.data);
-        console.log(channelData);
-        
       } catch (error) {
         console.error('Failed to fetch channel data:', error);
       }

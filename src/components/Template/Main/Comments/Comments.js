@@ -20,17 +20,14 @@ export default function Comments() {
   const [showButtons, setShowButtons] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  const [isLiked, setIsLiked] = useState(false);
-  const [isDisliked, setIsDisliked] = useState(false);
+  const [likesState, setLikesState] = useState({});
 
   useEffect(() => {
     const fetchComments = async () => {
         try {
             const response = await axios.get('http://localhost:5000/comments');
             dispatch(setComments(response.data));  // Set comments to Redux store
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) { console.log(error); }
     }
     fetchComments();
   }, [dispatch]);
@@ -51,19 +48,25 @@ export default function Comments() {
   };
 
     // Like button clicked
-    const handleLike = () => {
-        if (!isLiked) {
-            setIsLiked(!isLiked);      // Mark like as active
-            setIsDisliked(!isDisliked);
-        }
+    const handleLike = (commentId) => {
+        setLikesState((prevState) => ({
+            ...prevState,
+            [commentId]: {
+                isLiked: !prevState[commentId]?.isLiked,
+                isDisliked: false,
+            }
+        }));
     };
 
     // Dislike button clicked
-    const handleDislike = () => {
-        if (isLiked) {
-            setIsLiked(!isLiked);      // Uncheck the like button
-            setIsDisliked(!isDisliked);
-        }
+    const handleDislike = (commentId) => {
+        setLikesState((prevState) => ({
+            ...prevState,
+            [commentId]: {
+                isLiked: false,
+                isDisliked: !prevState[commentId]?.isDisliked,
+            },
+        }));
     };
 
     // input focus
@@ -120,8 +123,14 @@ export default function Comments() {
                                 <Typography variant='subtitle2' mt={'5px'}>{comment.title}</Typography>
 
                                 <Box className='likesBox'>
-                                    <Checkbox icon={<ThumbUpOffAltIcon className='likeUnlikeBtn'/>} checkedIcon={<ThumbUpAltIcon className='likeUnlikeBtn'/>} sx={{'&.Mui-checked': {color: 'black'}}} onClick={handleLike} checked={isLiked}/>
-                                    <Checkbox icon={<ThumbDownOffAltIcon className='likeUnlikeBtn'/>} checkedIcon={<ThumbDownAltIcon className='likeUnlikeBtn'/>} sx={{'&.Mui-checked': {color: 'black'}}} onClick={handleDislike} checked={isDisliked}/>
+                                    <Checkbox icon={<ThumbUpOffAltIcon className='likeUnlikeBtn'/>} checkedIcon={<ThumbUpAltIcon className='likeUnlikeBtn'/>} 
+                                        sx={{'&.Mui-checked': {color: 'black'}}} 
+                                        onClick={() => handleLike(comment.id)} checked={likesState[comment.id]?.isLiked || false}
+                                    />
+                                    <Checkbox icon={<ThumbDownOffAltIcon className='likeUnlikeBtn'/>} checkedIcon={<ThumbDownAltIcon className='likeUnlikeBtn'/>} 
+                                        sx={{'&.Mui-checked': {color: 'black'}}} 
+                                        onClick={() => handleDislike(comment.id)} checked={likesState[comment.id]?.isDisliked || false}
+                                    />
                                 </Box>
                             </Box>
                         </Box>

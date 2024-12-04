@@ -23,7 +23,6 @@ export default function PlayVideos() {
   const { state } = useLocation();
   const video = state?.video;
 
-  const [count, setCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState({});
@@ -40,14 +39,26 @@ export default function PlayVideos() {
         }, {})
 
         setIsSubscribed(subscribedChannel);
-      } catch (error) {
-        console.error('Failed to fetch subscribers:', error);
-      }
-    }    
+      } catch (error) { console.error('Failed to fetch subscribers:', error); }
+    };
+
+    const fetchLikes = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/likes');
+        const videoData = response.data.find((like) => like.videoId === video?.id);
+
+        if(videoData){
+          setIsLiked(videoData.isLiked);
+          setIsDisliked(videoData.isDisliked);
+        }
+      } catch (error) { console.error('Failed to fetch likes:', error); }
+    }
 
     fetchSubscribers();
-  }, []);
+    fetchLikes();
+  }, [video?.id]);
   
+  // subscribe video function
   const handleSubscribe = async () => {
     if (!video || isSubscribed[video.id]) return;
 
@@ -81,18 +92,54 @@ export default function PlayVideos() {
     }
   };
   
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    if (!isLiked) setCount(count + 1);
-    else setCount( count-1 );
-    if (isDisliked) setIsDisliked(false);
+  // like video function
+  const handleLike = async () => {
+    if (!video) return;
+
+    try {
+      const response = await axios.get(`http://localhost:5000/likes?videoId=${video.id}`);
+      const likesData = response.data[0];
+
+      if(likesData) {
+        await axios.put(`http://localhost:5000/likes/${likesData.id}`, {...likesData, isLiked: !likesData.isLiked, isDisliked: false,});
+        setIsLiked(!likesData.isLiked);
+        setIsDisliked(false);
+      }
+      else {
+        await axios.post('http://localhost:5000/likes', {videoId: video.id, isLiked: true, isDisliked: false});
+        setIsLiked(true);
+        setIsDisliked(false);
+      }
+
+      // setIsLiked((prev) => !prev);
+    } catch (error) {
+      console.log('Like failed');
+    }
   };
 
-  const handleDislike = () => {
-    setIsDisliked(!isDisliked);
-    if (!isDisliked) setCount(count - 1);
-    else setCount(count+1);
-    if (isLiked) setIsLiked(false);
+  // dislike video function
+  const handleDislike = async () => {
+    if (!video) return;
+
+    try {
+      const response = await axios.get(`http://localhost:5000/likes?videoId=${video.id}`);
+      const likesData = response.data[0];
+
+      if(likesData) {
+        await axios.put(`http://localhost:5000/likes/${likesData.id}`, {...likesData, isDisliked: !likesData.isDisliked, isLiked: false});
+        setIsDisliked(!likesData.isDisliked);
+        setIsLiked(false);
+      }
+      else {
+        await axios.post('http://localhost:5000/likes', {videoId: video.id, isLiked: false, isDisliked: true});
+        setIsLiked(false);
+        setIsDisliked(true);
+      }
+
+      // setIsLiked((prev) => !prev);
+    } catch (error) {
+      console.log('Like failed');
+    }
   };
 
   return (
@@ -125,11 +172,7 @@ export default function PlayVideos() {
                 <Box className='shareDownBtnsBox'>
                   <Box className='likeUnlikeBox'>
                     <ButtonGroup className='btnsGroup'>
-                      <Box className='likeBox'>
                         <Checkbox icon={<ThumbUpOffAltIcon className='likeUnlikeBtn groupIcon likeIcon'/>} checkedIcon={<ThumbUpAltIcon className='likeUnlikeBtn groupIcon likeIcon'/>} sx={{'&.Mui-checked': {color: 'black'}}} onClick={handleLike} checked={isLiked}/>
-                        <Typography variant='caption'>{count}</Typography>
-                      </Box>
-
                         <Divider orientation="vertical" variant="middle" flexItem />
                         <Checkbox icon={<ThumbDownOffAltIcon className='likeUnlikeBtn groupIcon'/>} checkedIcon={<ThumbDownAltIcon className='likeUnlikeBtn groupIcon'/>} sx={{'&.Mui-checked': {color: 'black'}}} onClick={handleDislike} checked={isDisliked}/>
                     </ButtonGroup>
