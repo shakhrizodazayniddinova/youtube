@@ -23,8 +23,8 @@ export default function PlayVideos() {
   const { state } = useLocation();
   const video = state?.video;
 
-  const [isLiked, setIsLiked] = useState(false);
-  const [isDisliked, setIsDisliked] = useState(false);
+  const [isLiked, setIsLiked] = useState({});
+  const [isDisliked, setIsDisliked] = useState({});
   const [isSubscribed, setIsSubscribed] = useState({});
 
   useEffect(() => {
@@ -50,6 +50,9 @@ export default function PlayVideos() {
         if(videoData){
           setIsLiked(videoData.isLiked);
           setIsDisliked(videoData.isDisliked);
+        } else {
+          setIsLiked(false);
+          setIsDisliked(false);
         }
       } catch (error) { console.error('Failed to fetch likes:', error); }
     }
@@ -58,6 +61,7 @@ export default function PlayVideos() {
     fetchLikes();
   }, [video?.id]);
   
+
   // subscribe video function
   const handleSubscribe = async () => {
     if (!video || isSubscribed[video.id]) return;

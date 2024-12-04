@@ -12,4 +12,4 @@ const getVideos = async () => {
     }
 }
 
-export {getVideos};
+export { getVideos };
