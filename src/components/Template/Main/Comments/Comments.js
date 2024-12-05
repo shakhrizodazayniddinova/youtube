@@ -12,6 +12,7 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { addComment, setComments } from '../../../../Redux/actions';
+import ErrorBoundary from '../../../../ErrorBoundary/ErrorBoundary';
 
 export default function Comments() {
   const dispatch = useDispatch();
@@ -19,33 +20,38 @@ export default function Comments() {
 
   const [showButtons, setShowButtons] = useState(false);
   const [inputValue, setInputValue] = useState("");
-
   const [likesState, setLikesState] = useState({});
+
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchComments = async () => {
         try {
             const response = await axios.get('http://localhost:5000/comments');
             dispatch(setComments(response.data));  // Set comments to Redux store
-        } catch (error) { console.log(error); }
+        } catch (error) { 
+            console.log(error); 
+        }
     }
     fetchComments();
   }, [dispatch]);
-  
-  // Post comment to db.json
-  const handleAddComment = async () => {
-      if (inputValue.trim() !== "") {
-          const newComment = { title: inputValue };
-          try {
-              // Send the new comment to the backend
-              const response = await axios.post('http://localhost:5000/comments', newComment);
-              dispatch(addComment(response.data));  // Add to Redux store
-              setInputValue('');
-          } catch (error) {
-              console.log(error);
-          }
-      }
-  };
+
+    // Post comment to db.json
+    const handleAddComment = async () => {
+        if (inputValue.trim() !== "") {
+            const newComment = { title: inputValue };
+            try {
+                // throw new Error('Failed to fetch videos');
+                // Send the new comment to the backend
+                const response = await axios.post('http://localhost:5000/comments', newComment);
+                dispatch(addComment(response.data));  // Add to Redux store
+                setInputValue('');
+            } catch (error) {
+                console.log(error);
+                setError(error.message);
+            }
+        }
+    };
 
     // Like button clicked
     const handleLike = (commentId) => {
@@ -112,33 +118,42 @@ export default function Comments() {
                 )}
             </Box>
 
-            <Box className='allCommentsBox'>
-                {comments.map((comment) => (
-                    <Box className='comments'>
-                        <Box className='comment'>
-                            <AccountCircleIcon className='userAvatar'/>
+            {error ? (
+                <ErrorBoundary>
+                    <div style={{ padding: '20px', textAlign: 'center' }}>
+                        <h1>Oops! Something went wrong while fetching comments.</h1>
+                        <p>{error}</p>
+                    </div>
+                </ErrorBoundary>
+            ) : (
+                <Box className='allCommentsBox'>
+                    {comments.map((comment) => (
+                        <Box className='comments'>
+                            <Box className='comment'>
+                                <AccountCircleIcon className='userAvatar'/>
 
-                            <Box>
-                                <Typography variant='body2' fontWeight={'bold'}>@User</Typography>
-                                <Typography variant='subtitle2' mt={'5px'}>{comment.title}</Typography>
+                                <Box>
+                                    <Typography variant='body2' fontWeight={'bold'}>@User</Typography>
+                                    <Typography variant='subtitle2' mt={'5px'}>{comment.title}</Typography>
 
-                                <Box className='likesBox'>
-                                    <Checkbox icon={<ThumbUpOffAltIcon className='likeUnlikeBtn'/>} checkedIcon={<ThumbUpAltIcon className='likeUnlikeBtn'/>} 
-                                        sx={{'&.Mui-checked': {color: 'black'}}} 
-                                        onClick={() => handleLike(comment.id)} checked={likesState[comment.id]?.isLiked || false}
-                                    />
-                                    <Checkbox icon={<ThumbDownOffAltIcon className='likeUnlikeBtn'/>} checkedIcon={<ThumbDownAltIcon className='likeUnlikeBtn'/>} 
-                                        sx={{'&.Mui-checked': {color: 'black'}}} 
-                                        onClick={() => handleDislike(comment.id)} checked={likesState[comment.id]?.isDisliked || false}
-                                    />
+                                    <Box className='likesBox'>
+                                        <Checkbox icon={<ThumbUpOffAltIcon className='likeUnlikeBtn'/>} checkedIcon={<ThumbUpAltIcon className='likeUnlikeBtn'/>} 
+                                            sx={{'&.Mui-checked': {color: 'black'}}} 
+                                            onClick={() => handleLike(comment.id)} checked={likesState[comment.id]?.isLiked || false}
+                                        />
+                                        <Checkbox icon={<ThumbDownOffAltIcon className='likeUnlikeBtn'/>} checkedIcon={<ThumbDownAltIcon className='likeUnlikeBtn'/>} 
+                                            sx={{'&.Mui-checked': {color: 'black'}}} 
+                                            onClick={() => handleDislike(comment.id)} checked={likesState[comment.id]?.isDisliked || false}
+                                        />
+                                    </Box>
                                 </Box>
                             </Box>
+                            
+                            <IconButton><MoreVertIcon className='moreIcon'/></IconButton>
                         </Box>
-                        
-                        <IconButton><MoreVertIcon className='moreIcon'/></IconButton>
-                    </Box>
-                ))}
-            </Box>
+                    ))}
+                </Box>
+            )}
         </Box>
     </CommentsStyled>
   )

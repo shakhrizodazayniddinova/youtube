@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { AsideFooter, AsideList, AsideListBox, AsideStyled } from './AsideStyles';
 import { Box, Typography } from '@mui/material';
 import { exploreDatas, homeDatas, youDatas } from './AsideDatas';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Aside({isVisible}) {

@@ -5,8 +5,8 @@ import Videos from '../Videos/Videos'
 export default function Home() {
   return (
     <div>
-        <Types/>
-        <Videos/>
+      <Types/>
+      <Videos/>
     </div>
   )
 }

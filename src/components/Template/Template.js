@@ -1,11 +1,13 @@
 import { CssBaseline } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Aside from './Aside/Aside';
 import Header from './Header/Header';
 import { MainStyled, TemplateStyled } from './TemplateStyled';
-import { useDispatch, useSelector } from 'react-redux';
 import { toggleAsideVisibility } from '../../Redux/actions';
+import ErrorBoundary from '../../ErrorBoundary/ErrorBoundary';
+import Videos from './Main/Videos/Videos';
 
 export default function Template() {
   const dispatch = useDispatch();
@@ -28,19 +30,21 @@ export default function Template() {
     <TemplateStyled>
         <CssBaseline/>
 
-        <header>
+        <ErrorBoundary>
+          <header>
             <Header toggleVisible={toggleVisible}/>
-        </header>
+          </header>
 
-        <MainStyled>
-          <aside className={location.pathname === '/play' ? 'playAside' : ''}>
-            <Aside isVisible={isVisible}/>
-          </aside>
+          <MainStyled>
+            <aside className={location.pathname === '/play' ? 'playAside' : ''}>
+              <Aside isVisible={isVisible}/>
+            </aside>
 
-          <main>
-            <Outlet/>
-          </main>
-        </MainStyled>
+            <main>
+              <Outlet/>
+            </main>
+          </MainStyled>
+        </ErrorBoundary>
     </TemplateStyled>
   )
 }
