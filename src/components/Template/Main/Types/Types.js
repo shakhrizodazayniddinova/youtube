@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { TypesStyled } from './TypesStyles'
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 
 export default function Types() {
   const [ isActive, setIsActive ] = useState(0);
@@ -23,11 +23,11 @@ export default function Types() {
 
   return (
     <TypesStyled>
-        <Box className='btnsBox'>
-            {btnsData.map((item, index) => (
-                <button key={item.label} className={`${isActive === index ? 'active' : ''} typeBtn`} onMouseDown={() => setIsActive(index)}>{item.label}</button>
-            ))}
-        </Box>
+      <Box className='btnsBox'>
+        {btnsData.map((item, index) => (
+          <button key={item.label} className={`${isActive === index ? 'active' : ''} typeBtn`} onMouseDown={() => setIsActive(index)}>{item.label}</button>
+        ))}
+      </Box>
     </TypesStyled>
   )
 }

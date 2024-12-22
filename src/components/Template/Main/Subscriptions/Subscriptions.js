@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import { SubStyled } from './SubscriptionsStyled';
 import { Box, Button, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';

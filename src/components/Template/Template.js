@@ -1,5 +1,5 @@
 import { CssBaseline } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Aside from './Aside/Aside';
@@ -8,11 +8,17 @@ import { MainStyled, TemplateStyled } from './TemplateStyled';
 import { toggleAsideVisibility } from '../../Redux/actions';
 import ErrorBoundary from '../../ErrorBoundary/ErrorBoundary';
 import Videos from './Main/Videos/Videos';
+import Types from './Main/Types/Types';
 
 export default function Template() {
   const dispatch = useDispatch();
   const location = useLocation();
   const isVisible = useSelector((state) => state.aside.isVisible);
+  const [searchQuery, setSearchQuery] = useState('');  // state for search
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
   
   // aside visible or not visible
   const toggleVisible = () => dispatch((toggleAsideVisibility()));
@@ -32,7 +38,7 @@ export default function Template() {
 
         <ErrorBoundary>
           <header>
-            <Header toggleVisible={toggleVisible}/>
+            <Header toggleVisible={toggleVisible} onSearch={handleSearch}/>
           </header>
 
           <MainStyled>
@@ -41,7 +47,14 @@ export default function Template() {
             </aside>
 
             <main>
-              <Outlet/>
+              {location.pathname === '/' ? (
+                <>
+                  <Types/>
+                  <Videos searchQuery={searchQuery} />
+                </>
+              ) : (
+                <Outlet />
+              )}
             </main>
           </MainStyled>
         </ErrorBoundary>

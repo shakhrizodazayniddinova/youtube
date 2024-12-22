@@ -1,5 +1,4 @@
-import React, { Profiler, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { DetailsText, Duration, ThumbnailWrapper, VideoDetails, VideosStyled, } from './VideosStyles';
@@ -10,13 +9,16 @@ import Loading from '../../Loading/Loading';
 import { setVideos } from '../../../../Redux/actions';
 import ErrorBoundary from '../../../../ErrorBoundary/ErrorBoundary';
 
-
-export default function Videos() {
+export default function Videos({searchQuery}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
-
   const { videos, loading } = useSelector((state) => state.videos);
+
+  // Filter videos based on search query
+  const filteredVideos = videos.filter((video) =>
+    video.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,16 +39,6 @@ export default function Videos() {
     navigate('/play', { state: {video} });
   }
 
-  const logProfilerData = (
-    id, 
-    phase,
-    actualDuration, 
-    baseDuration
-  ) => {
-    console.log(`[${id} - ${phase}] Actual Duration: ${actualDuration}ms`);
-    console.log(`[${id} - ${phase}] Base Duration: ${baseDuration}ms`);
-  };
-
   return (
     <>
       {loading ? (
@@ -59,43 +51,41 @@ export default function Videos() {
           </div>
         </ErrorBoundary>
       ) : (
-        <Profiler id='videosProfiler' onRender={logProfilerData}>
-          <VideosStyled className='videosBox'>
-            <Grid container className='videosGrid'>
-              {videos.map((video) => (
-                <Grid item key={video.id} className='cardContainer' onClick={() => handleClickItem(video)} xs={12} sm={6} md={3.8}>
-                  {/* Thumbnail Section */}
-                  <ThumbnailWrapper className='thumbnailWrapper'>
-                    <img src={video.imgLink} alt="Video Thumbnail" height={'100%'} width={'100%'} className='thumbnailImg' />
+        <VideosStyled className='videosBox'>
+          <Grid container className='videosGrid'>
+            {filteredVideos.map((video) => (
+              <Grid item key={video.id} className='cardContainer' onClick={() => handleClickItem(video)} xs={12} sm={6} md={3.8}>
+                {/* Thumbnail Section */}
+                <ThumbnailWrapper className='thumbnailWrapper'>
+                  <img src={video.imgLink} alt="Video Thumbnail" height={'100%'} width={'100%'} className='thumbnailImg' />
 
-                    <Duration>{video.duration}</Duration>
-                  </ThumbnailWrapper>
+                  <Duration>{video.duration}</Duration>
+                </ThumbnailWrapper>
 
-                  {/* Video Details */}
-                  <VideoDetails className='videoDetails'>
-                    <Box className='avatarTexts'>
-                        <Avatar src={video.avatar} alt="Channel Avatar" className='avatar'/>
-                        
-                        <DetailsText>
-                          <Typography variant="subtitle2" className="title">
-                            {video.title}
-                          </Typography>
-                          <Typography variant="body2" className="channel">
-                            {video.channel}
-                          </Typography>
-                          <Typography variant="caption" className="views">
-                            {video.views}
-                          </Typography>
-                        </DetailsText>
-                    </Box>
+                {/* Video Details */}
+                <VideoDetails className='videoDetails'>
+                  <Box className='avatarTexts'>
+                      <Avatar src={video.avatar} alt="Channel Avatar" className='avatar'/>
+                      
+                      <DetailsText>
+                        <Typography variant="subtitle2" className="title">
+                          {video.title}
+                        </Typography>
+                        <Typography variant="body2" className="channel">
+                          {video.channel}
+                        </Typography>
+                        <Typography variant="caption" className="views">
+                          {video.views}
+                        </Typography>
+                      </DetailsText>
+                  </Box>
 
-                    <IconButton className='moreBtn'><MoreVertIcon/></IconButton>
-                  </VideoDetails>
-                </Grid>
-              ))}
-            </Grid>
-          </VideosStyled>
-        </Profiler>
+                  <IconButton className='moreBtn'><MoreVertIcon/></IconButton>
+                </VideoDetails>
+              </Grid>
+            ))}
+          </Grid>
+        </VideosStyled>
       )}
     </>
   )

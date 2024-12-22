@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { HeaderStyled, LogoBox, SearchBox, SettingBox } from './HeaderStyles';
 import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -11,7 +11,15 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import logo from './logo.png';
 import { Link } from 'react-router-dom';
 
-export default function Header({toggleVisible}) {
+export default function Header({toggleVisible, onSearch}) {
+  const [query, setQuery] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSearch(query);
+    console.log(query);
+  };
+
   return (
     <HeaderStyled>
       <LogoBox>
@@ -25,8 +33,8 @@ export default function Header({toggleVisible}) {
       </LogoBox>
 
       <SearchBox>
-        <form>
-          <input type="text" placeholder='Search'/>
+        <form onSubmit={handleSubmit}>
+          <input type="text" placeholder='Search' value={query} onChange={(e) => setQuery(e.target.value)}/>
           <IconButton className='searchIcon'><SearchIcon/></IconButton>
         </form>
         <IconButton className='micIcon'>

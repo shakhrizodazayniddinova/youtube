@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Comments from '../Comments/Comments';
-import { selectChannel } from '../../../../Redux/actions';
-import { HomeBox, PlayStyled } from './PlayStyled';
-import { Box, Button, ButtonGroup, Divider, IconButton, Typography } from '@mui/material';
+import axios from 'axios';
 import Home from '../Home/Home';
+import Comments from '../Comments/Comments';
+import { HomeBox, PlayStyled } from './PlayStyled';
+import { selectChannel } from '../../../../Redux/actions';
+import { Box, Button, ButtonGroup, Divider, IconButton, Typography } from '@mui/material';
 import ReplyIcon from '@mui/icons-material/Reply';
 import VerticalAlignBottomIcon from '@mui/icons-material/VerticalAlignBottom';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -14,14 +15,13 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import Checkbox from '@mui/material/Checkbox';
-import axios from 'axios';
 
 const APIUrl = 'http://localhost:5000/subscribers';
 
 export default function PlayVideos() {
   const dispatch = useDispatch();
-  const { state } = useLocation();
-  const video = state?.video;
+  const location = useLocation();
+  const video = location.state?.video;
 
   const [isLiked, setIsLiked] = useState({});
   const [isDisliked, setIsDisliked] = useState({});
@@ -60,7 +60,6 @@ export default function PlayVideos() {
     fetchSubscribers();
     fetchLikes();
   }, [video?.id]);
-  
 
   // subscribe video function
   const handleSubscribe = async () => {
@@ -172,13 +171,12 @@ export default function PlayVideos() {
                   </Box>
                 </Box>
 
-
                 <Box className='shareDownBtnsBox'>
                   <Box className='likeUnlikeBox'>
                     <ButtonGroup className='btnsGroup'>
-                        <Checkbox icon={<ThumbUpOffAltIcon className='likeUnlikeBtn groupIcon likeIcon'/>} checkedIcon={<ThumbUpAltIcon className='likeUnlikeBtn groupIcon likeIcon'/>} sx={{'&.Mui-checked': {color: 'black'}}} onClick={handleLike} checked={isLiked}/>
-                        <Divider orientation="vertical" variant="middle" flexItem />
-                        <Checkbox icon={<ThumbDownOffAltIcon className='likeUnlikeBtn groupIcon'/>} checkedIcon={<ThumbDownAltIcon className='likeUnlikeBtn groupIcon'/>} sx={{'&.Mui-checked': {color: 'black'}}} onClick={handleDislike} checked={isDisliked}/>
+                      <Checkbox icon={<ThumbUpOffAltIcon className='likeUnlikeBtn groupIcon likeIcon'/>} checkedIcon={<ThumbUpAltIcon className='likeUnlikeBtn groupIcon likeIcon'/>} sx={{'&.Mui-checked': {color: 'black'}}} onClick={handleLike} checked={isLiked}/>
+                      <Divider orientation="vertical" variant="middle" flexItem />
+                      <Checkbox icon={<ThumbDownOffAltIcon className='likeUnlikeBtn groupIcon'/>} checkedIcon={<ThumbDownAltIcon className='likeUnlikeBtn groupIcon'/>} sx={{'&.Mui-checked': {color: 'black'}}} onClick={handleDislike} checked={isDisliked}/>
                     </ButtonGroup>
                   </Box>
 
