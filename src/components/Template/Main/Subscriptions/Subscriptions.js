@@ -10,7 +10,8 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import axios from 'axios';
+import { db } from '../../../../Firebase/Firebase';
+import { get, ref } from 'firebase/database';
 
 export default function Subscriptions() {
   const [channelData, setChannelData] = useState([]);
@@ -30,8 +31,10 @@ export default function Subscriptions() {
   useEffect(() => {
     const fetchChannelData = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/subscribers');
-        setChannelData(res.data);
+        const dbRef = ref(db, 'subscribers');  // refer to the 'subscribers' node
+        const snapshot = await get(dbRef);  // get snapshot
+
+        snapshot.exists() ? setChannelData(Object.values(snapshot.val())) : setChannelData([]);
       } catch (error) {
         console.error('Failed to fetch channel data:', error);
       }

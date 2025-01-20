@@ -5,8 +5,8 @@ import { DetailsText, Duration, ThumbnailWrapper, VideoDetails, VideosStyled, } 
 import { Avatar, Box, Grid, IconButton, Typography } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { getVideos } from '../../../../API/API';
-import Loading from '../../Loading/Loading';
 import { setVideos } from '../../../../Redux/actions';
+import Loading from '../../Loading/Loading';
 import ErrorBoundary from '../../../../ErrorBoundary/ErrorBoundary';
 
 export default function Videos({searchQuery}) {
@@ -16,9 +16,9 @@ export default function Videos({searchQuery}) {
   const { videos, loading } = useSelector((state) => state.videos);
 
   // Filter videos based on search query
-  const filteredVideos = videos.filter((video) =>
-    video.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredVideos = videos.filter((video) =>
+  //   video.title?.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,7 +53,8 @@ export default function Videos({searchQuery}) {
       ) : (
         <VideosStyled className='videosBox'>
           <Grid container className='videosGrid'>
-            {filteredVideos.map((video) => (
+            {videos
+            .map((video) => (
               <Grid item key={video.id} className='cardContainer' onClick={() => handleClickItem(video)} xs={12} sm={6} md={3.8}>
                 {/* Thumbnail Section */}
                 <ThumbnailWrapper className='thumbnailWrapper'>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { AsideFooter, AsideList, AsideListBox, AsideStyled } from './AsideStyles';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import { exploreDatas, homeDatas, youDatas } from './AsideDatas';
+import { AsideFooter, AsideList, AsideListBox, AsideStyled } from './AsideStyles';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { get, ref } from 'firebase/database';
+import { db } from '../../../Firebase/Firebase';
 
 export default function Aside({isVisible}) {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Aside({isVisible}) {
   const [ subscribeActive, setSubscribeActive ] = useState();
   const [ exploreActive, setExploreActive ] = useState();
 
-  const [ channelData, setChannelData ] = useState([]);
+  const [ channelData, setChannelData ] = useState([]);  
 
   // btn active function
   const handleActive = (btnType, btnIndex) => {
@@ -39,10 +40,12 @@ export default function Aside({isVisible}) {
   useEffect(() => {
     const fetchChannelData = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/subscribers');
-        setChannelData(res.data);
+        const dbRef = ref(db, 'subscribers');  // refer to the 'subscribers' node
+        const snapshot = await get(dbRef);  // get snapshot
+
+        snapshot.exists() ? setChannelData(Object.values(snapshot.val())) : setChannelData([]);
       } catch (error) {
-        console.error('Failed to fetch channel data:', error);
+        console.error("Failed to fetch channel data:", error);
       }
     }
 
@@ -95,7 +98,7 @@ export default function Aside({isVisible}) {
           <Box className='channelInform'>
             {channelData.map((item, index) => (
                 <AsideList className={subscribeActive === index ? 'active' : ''} onClick={() => handleActive('subscribe', index)}>
-                    <img src={item.imgLink} alt="" />
+                    <img src={item.imgLink} alt="img" />
                     <Typography variant='body2' fontSize={'15px'} m={'2px 0 0 0'}>{item.channel}</Typography>
                 </AsideList>
             ))}

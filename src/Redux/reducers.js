@@ -1,4 +1,4 @@
-import { ADD_COMMENT, SELECT_CHANNEL, selectChannel, SET_COMMENTS, SET_VIDEOS, TOGGLE_ASIDE_VISIBILITY, UNSUBSCRIBE_CHANNEL } from "./actions";
+import { ADD_COMMENT, SELECT_CHANNEL, SET_COMMENTS, SET_VIDEOS, TOGGLE_ASIDE_VISIBILITY } from "./actions";
 
 // Initial state for aside visibility
 const initialAsideState = {

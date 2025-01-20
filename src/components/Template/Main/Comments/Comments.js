@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import { CommentsStyled } from './CommentsStyled';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
@@ -13,6 +12,8 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { addComment, setComments } from '../../../../Redux/actions';
 import ErrorBoundary from '../../../../ErrorBoundary/ErrorBoundary';
+import { get, ref, set } from 'firebase/database';
+import { db } from '../../../../Firebase/Firebase';
 
 export default function Comments() {
   const dispatch = useDispatch();
@@ -27,8 +28,10 @@ export default function Comments() {
   useEffect(() => {
     const fetchComments = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/comments');
-            dispatch(setComments(response.data));  // Set comments to Redux store
+            const commentsRef = ref(db, 'comments');
+            const snapshot = await get(commentsRef);
+
+            if(snapshot.exists()) dispatch(setComments(Object.values(snapshot.val())));  // Set comments to Redux store
         } catch (error) { 
             console.log(error); 
         }
@@ -41,10 +44,11 @@ export default function Comments() {
         if (inputValue.trim() !== "") {
             const newComment = { title: inputValue };
             try {
-                // throw new Error('Failed to fetch videos');
                 // Send the new comment to the backend
-                const response = await axios.post('http://localhost:5000/comments', newComment);
-                dispatch(addComment(response.data));  // Add to Redux store
+                const commentId = Date.now().toString();  // Unique ID for the comment
+                const commentRef = ref(db, 'comments/' + commentId);
+                await set(commentRef, newComment);  // Save the new comment to Firebase
+                dispatch(addComment({ id: commentId, ...newComment }));  // Add to Redux store
                 setInputValue('');
             } catch (error) {
                 console.log(error);

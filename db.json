@@ -9,23 +9,8 @@
       "title": "Rick Astley"
     }
   ],
-  "subscribers": [
-    {
-      "id": "19ef",
-      "videoId": "1",
-      "channel": "Rick Astley",
-      "imgLink": "https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg",
-      "isSubscribed": true
-    }
-  ],
-  "likes": [
-    {
-      "id": "3f28",
-      "videoId": "1",
-      "isLiked": true,
-      "isDisliked": false
-    }
-  ],
+  "subscribers": [],
+  "likes": [],
   "videos": [
     {
       "id": "1",
